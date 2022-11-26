@@ -1,0 +1,26 @@
+{
+    "students": [
+        {
+            "id": 1,
+            "city": "pune"
+        },
+        {
+            "id": 2,
+            "city": "guj"
+        },
+        {
+            "id": 3,
+            "city": "rohit yadav"
+        }
+    ],
+    "teachers": [
+        {
+            "id": 1,
+            "city": "pune"
+        },
+        {
+            "id": 2,
+            "city": "guj"
+        }
+    ]
+}
