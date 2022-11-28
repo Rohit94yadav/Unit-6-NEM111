@@ -1,0 +1,69 @@
+
+1.Find all the users, whose 'id' OR 'age' OR number of 'family_members' is even, add a new field "even_user" :true to these users.
+
+
+db.data.updateMany({$or:[{id:{$mod:[2,0]},age:{$mod:[2,0]},family_members:{$mod:[2,0]}}]},{$set:{"even-user":true}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 2,
+  upsertedCount: 0 }
+db.data.find({$or:[{id:{$mod:[2,0]},age:{$mod:[2,0]},family_members:{$mod:[2,0]}}]})
+{ _id: ObjectId("634d20e80332f845dc476dbe"),
+  id: 2,
+  full_name: 'Niccolo Phethean',
+  age: 22,
+  gender: 'Female',
+  balance: 57087.13,
+  native: 'Japan',
+  relocate_to: 'Russia',
+  family_members: 2,
+  'even-user': true }
+{ _id: ObjectId("634d20e80332f845dc476dca"),
+  id: 14,
+  full_name: 'Aguste Lorent',
+  age: 30,
+  gender: 'Female',
+  balance: 98010.85,
+  native: 'United States',
+  relocate_to: 'Russia',
+  family_members: 2,
+  'even-user': true }
+{ _id: ObjectId("634d20e80332f845dc476dcc"),
+  id: 16,
+  full_name: 'Thain Bimson',
+  age: 20,
+  gender: 'Female',
+  balance: 22834.8,
+  native: 'United States',
+  relocate_to: 'Russia',
+  family_members: 2,
+  'even-user': true }
+
+2.Find all the users, whose 'gender' is Male AND 'age' is odd - and decrease their 'age' by 1.
+
+db.data.updateMany({gender:"Male",age:{$mod:[2,1]}},{$inc:{age:-1}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0 }
+db.data.find({gender:"Male",age:{$mod:[2,1]}})
+
+///After the impletion when we find that condition than zero data show bcoz all odd age is convert in even by the $inc:-1
+
+
+3.Find all the users, whose 'native' is United States AND 'age' is less than or equal to 23 - and remove 'relocate_to' field, - and then write a query to find and sort them in ascending order of 'family_members'
+db.data.find({native:"United States",age:{$lt:23},age:{$eq:23}}).sort({family_members:-1})
+{ _id: ObjectId("634d20e80332f845dc476dc6"),
+  id: 10,
+  full_name: 'Babbette Croci',
+  age: 23,
+  gender: 'Female',
+  balance: 25206,
+  native: 'United States',
+  relocate_to: 'France',
+  family_members: 2 }
+
+
+NEM111

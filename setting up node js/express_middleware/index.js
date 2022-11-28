@@ -11,13 +11,14 @@ app.use((req,res,next)=>{
     next()
 })
 
-app.use((cors)({
-    origin:"*"
-}))
+// app.use((cors)({
+//     origin:"*"
+// }))
 
 app.use("/students",studentRouter)
 
 app.get("/",(req,res)=>{
+    console.log(req.query)
     res.send("welcome")
 })
 
