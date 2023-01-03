@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      #navbar {
+        display: flex;
+        margin: auto;
+        justify-content: space-between;
+        align-items: center;
+       
+        background-color: rgb(126, 58, 58);
+        padding: 20px;
+        font-size: larger;
+        font-weight: bolder;
+      }
+
+      #products {
+        color: white;
+      }
+
+      #container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+        width: 95%;
+
+        margin: auto;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+
+        margin-top: 30px;
+      }
+      #container > div {
+        padding: 20px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        height: 450px;
+      }
+
+      #container > div > div {
+        display: flex;
+        margin: auto;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .productimg {
+        width: 100%;
+      }
+
+      .heartimg {
+        width: 30px;
+        height: 30px;
+      }
+
+      h2 {
+        height: 40px;
+      }
+
+      #wishlist {
+        color: white;
+      }
+
+      #navdiv {
+        display: flex;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #spanid {
+        /* position:relative;
+        right: 320px;
+        top: -13px; */
+        color: white;
+        border-radius: 100%;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        background-color: black;
+        margin-bottom: 50px;
+      }
+
+      @media all and (min-width: 550px) and (max-width: 980px) {
+        #container {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: auto;
+        }
+        #container > div {
+          padding: 20px;
+          box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+          height: 500px;
+        }
+      }
+
+      @media all and (min-width: 250px) and (max-width: 549px) {
+        #container {
+          display: grid;
+          grid-template-columns: repeat(1, 1fr);
+          grid-template-rows: auto;
+        }
+        #container > div {
+          padding: 20px;
+          box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+          height: 500px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar">
+      <div>
+        <a href="./index.html" id="products">Products</a>
+      </div>
+      <div id="navdiv">
+        <a href="./wishlist.html" id="wishlist">Wishlist</a>
+        <h2 id="spanid">0</h2>
+      </div>
+    </div>
+    <select id="filter">
+      <option value="">Filter By Category</option>
+      <option value="men">Men</option>
+      <option value="women">Women</option>
+      <option value="kids">Kids</option>
+      <option value="homedecor">Homedecor</option>
+    </select>
+
+    <div id="sorting">
+      <select name="" id="pricesort">
+        <option value="">Sort By Price</option>
+        <option value="h2l">High to Low</option>
+        <option value="l2h">Low to High</option>
+      </select>
+    </div>
+
+    <div id="container"></div>
+  </body>
+</html>
+<script>
+  let wishlist = JSON.parse(localStorage.getItem("wishlist"));
+  let wishlistitem = document.getElementById("spanid");
+  wishlistitem.innerText = wishlist.length;
+
+  var filter = document.getElementById("filter");
+  let fetchedData = [];
+
+  filter.addEventListener("change", function () {
+    let filteredData = fetchedData.filter(function (element) {
+      console.log(element);
+      if (element.category === filter.value) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    append(filteredData);
+  });
+
+  let arr = [];
+  document.getElementById("pricesort").addEventListener("change", (e) => {
+    let sortBy = e.target.value;
+
+    if (sortBy === "h2l") {
+      let newData = arr.sort((a, b) => +b.price - +a.price);
+      append(newData);
+    } else if (sortBy === "l2h") {
+      let newData = arr.sort((a, b) => +a.price - +b.price);
+      append(newData);
+    }
+  });
+
+  async function getdata() {
+    let url = `https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-products`;
+
+    let res = await fetch(url);
+    let data = await res.json();
+    fetchedData = data.data;
+    arr = data.data;
+    console.log(data);
+    append(data.data);
+  }
+
+  getdata();
+  let wishlistProduct = JSON.parse(localStorage.getItem("wishlist")) || [];
+  function append(data) {
+    container.innerHTML = null;
+    data.forEach(function (el) {
+      let container = document.getElementById("container");
+
+      let img = document.createElement("img");
+      img.setAttribute("class", "productimg");
+      img.src =
+        "https://media.istockphoto.com/id/1137730828/photo/beautiful-albanian-girl-posing-in-the-field-showing-the-long-dress.jpg?s=612x612&w=0&k=20&c=2GMUEkTTQ_zTwrTONd6a3C_eUwJjq01VWWMaMkAWxrQ=";
+
+      let title = document.createElement("h2");
+      title.innerText = el.title;
+
+      let brand = document.createElement("h2");
+      brand.innerText = el.brand;
+
+      let price = document.createElement("h3");
+      price.innerText = el.price;
+
+      let category = document.createElement("h3");
+      category.innerText = el.category;
+
+      let wishlistIcon = document.createElement("img");
+      wishlistIcon.setAttribute("class", "heartimg");
+      wishlistIcon.src =
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Heart_icon_red_hollow.svg/497px-Heart_icon_red_hollow.svg.png";
+      wishlistIcon.addEventListener("click", function () {
+        saveData(el);
+        wishlistIcon.src =
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Love_Heart_symbol.svg/1125px-Love_Heart_symbol.svg.png";
+      });
+
+      let div = document.createElement("div");
+
+      let div2 = document.createElement("div");
+
+      div2.append(category, wishlistIcon);
+      div.append(img, title, brand, price, div2);
+
+      container.append(div);
+    });
+  }
+
+  function saveData(el) {
+    wishlistProduct.push(el);
+
+    localStorage.setItem("wishlist", JSON.stringify(wishlistProduct));
+  }
+</script>

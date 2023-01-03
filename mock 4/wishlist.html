@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         #navbar{
+        display: flex;
+        margin: auto;
+        justify-content:space-around;
+        align-items: center;
+        gap: 60px;
+        background-color: rgb(126, 58, 58);
+        padding: 20px;
+        font-size: larger;
+        font-weight: bolder;
+        
+      }
+
+      #navbar>a{
+        color: white;
+
+      }
+
+      #container{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+        width: 95%;
+        
+        margin: auto;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        
+        margin-top: 30px;
+      }
+      #container>div{
+        padding: 20px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        height: 400px;
+      }
+
+      #container>div>div{
+        
+       display: flex;
+       margin: auto;
+       justify-content: space-between;
+       align-items: center;
+      }
+
+      .productimg{
+        width: 100%;
+      }
+
+      .heartimg{
+        width: 30px;
+        height: 30px;
+      }
+
+      h2{
+        height: 40px;
+      }
+
+
+
+      @media all and (min-width: 550px) and (max-width: 980px) {
+      
+        #container{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+       
+        
+      }
+      #container>div{
+        padding: 20px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        height: 500px;
+      }
+
+        
+
+      }
+
+      @media all and (min-width: 250px) and (max-width: 549px) {
+        #container{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: auto;
+       
+        
+      }
+      #container>div{
+        padding: 20px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        height: 500px;
+      }
+
+    
+    }
+    </style>
+</head>
+<body>
+    <div id="navbar">
+      
+      
+    
+        <a href="./index.html" id="products">Products</a>
+        <a href="./wishlist.html" id="wishlist">Wishlist</a>
+      </div>
+     
+      <div id="container">
+       
+      </div>
+</body>
+</html>
+
+<script>
+    
+let wishlist = JSON.parse(localStorage.getItem("wishlist"));
+
+wishlistFun(wishlist)
+
+
+
+function wishlistFun(wishlist){
+
+  let container = document.getElementById("container")
+  
+  wishlist.forEach(function(el,index){
+
+    let img = document.createElement("img");
+      img.setAttribute("class","productimg")
+      img.src = "https://media.istockphoto.com/id/1137730828/photo/beautiful-albanian-girl-posing-in-the-field-showing-the-long-dress.jpg?s=612x612&w=0&k=20&c=2GMUEkTTQ_zTwrTONd6a3C_eUwJjq01VWWMaMkAWxrQ=";
+
+      let title = document.createElement("h2");
+      title.innerText = el.title;
+
+      let brand = document.createElement("h2");
+      brand.innerText = el.brand;
+        
+
+      let price = document.createElement("h3");
+      price.innerText = el.price;
+
+      let category= document.createElement("h3");
+      category.innerText = el.category;
+
+      
+
+      let div = document.createElement("div");
+
+      
+
+      
+      div.append(img, title, brand, price, category);
+      
+      container.append(div);
+  })
+
+}
+</script>
